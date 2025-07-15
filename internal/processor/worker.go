@@ -1,17 +1,13 @@
 package processor
 
 import (
-	"github.com/rs/zerolog/log"
+	"github.com/julianofirme/tracedog/internal/store"
 )
 
 func StartWorker() {
 	go func() {
 		for event := range GetQueue() {
-			log.Info().
-				Str("event_name", event.EventName).
-				Str("user_id", event.UserID).
-				Interface("props", event.Props).
-				Msg("event processed by worker")
+			store.GetStore().SaveEvent(event)
 		}
 	}()
 }
